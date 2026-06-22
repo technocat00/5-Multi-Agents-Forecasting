@@ -11,8 +11,7 @@ from update_readme_results import update_readme
 
 
 def plot_decomposition(series: pd.Series, seasonal_period: int, ticker: str):
-    decomp_agent = DecompositionAgent(period=seasonal_period)
-    components = decomp_agent.decompose(series)
+    components = DecompositionAgent(period=seasonal_period).decompose(series)
     fig, axes = plt.subplots(4, 1, figsize=(12, 10), sharex=True)
     series.plot(ax=axes[0], title=f"{ticker} Daily Trading Volume", linewidth=0.8)
     components["trend"].plot(ax=axes[1], title="Trend Component")
@@ -29,7 +28,7 @@ def plot_backtest_mape(backtest_results: pd.DataFrame):
     x = pd.to_datetime(backtest_results["fold_end"])
     for col in mape_cols:
         ax.plot(x, backtest_results[col], label=col.replace("_mape", ""))
-    ax.set_title("Rolling-origin MAPE by fold")
+    ax.set_title("Rolling-origin MAPE by Fold")
     ax.set_xlabel("Fold end date")
     ax.set_ylabel("MAPE (%)")
     ax.legend()
@@ -42,14 +41,13 @@ def plot_holdout_forecast(series: pd.Series, seasonal_period: int, ticker: str):
     holdout = min(max(20, seasonal_period * 4), max(5, len(series) // 5))
     train = series.iloc[:-holdout]
     test = series.iloc[-holdout:]
-    coordinator = Coordinator(seasonal_period=seasonal_period, dynamic_selection=True)
-    out = coordinator.fit_predict(train, holdout)
+    out = Coordinator(seasonal_period=seasonal_period, dynamic_selection=True).fit_predict(train, holdout)
     pred = pd.Series(out["combined"], index=test.index, name="forecast")
     fig, ax = plt.subplots(figsize=(12, 6))
     series.iloc[-min(len(series), 120):].plot(ax=ax, label="actual")
     pred.plot(ax=ax, label=f"forecast: {out['selected_model']}")
     ax.axvline(test.index[0], linestyle="--", linewidth=1)
-    ax.set_title(f"Latest holdout forecast for {ticker}")
+    ax.set_title(f"Latest Holdout Forecast for {ticker}")
     ax.set_xlabel("Date")
     ax.set_ylabel("Volume")
     ax.legend()
@@ -107,8 +105,8 @@ def main():
     plot_holdout_forecast(series, args.seasonal_period, ticker_label)
     if not args.skip_readme_update:
         update_readme("README.md", "results")
-        print("Updated README.md with metrics and plots.")
-    print("Done. Commit README.md, results/, and the modified Python files.")
+        print("Updated README.md with metrics and graphs.")
+    print("Done. Commit agents/, baselines/, evaluation/, run_pipeline.py, update_readme_results.py, README.md, and results/.")
 
 
 if __name__ == "__main__":

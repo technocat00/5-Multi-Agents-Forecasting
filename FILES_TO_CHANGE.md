@@ -1,47 +1,55 @@
-# Files to replace in your GitHub repo
+# Files to replace
 
-Copy these files/folders into the root of `technocat00/5-Multi-Agent-Forecasting`:
+Copy these files/folders into the root of your GitHub repo:
 
-- `agents/decomposition_agent.py`
-- `agents/trend_agent.py`
-- `agents/seasonal_agent.py`
-- `agents/residual_agent.py`
-- `agents/coordinator.py`
-- `baselines/baselines.py`
-- `evaluation/metrics.py`
-- `evaluation/backtest.py`
-- `data_loader.py`
-- `run_pipeline.py`
-- `update_readme_results.py`
-- `README.md`
-- `requirements.txt`
-- `deploy_results.sh`
+```text
+agents/decomposition_agent.py
+agents/trend_agent.py
+agents/seasonal_agent.py
+agents/residual_agent.py
+agents/coordinator.py
+baselines/baselines.py
+evaluation/metrics.py
+evaluation/backtest.py
+data_loader.py
+run_pipeline.py
+update_readme_results.py
+README.md
+requirements.txt
+deploy_results.sh
+```
 
-Then run:
+# Exact run
 
 ```bash
+cd 5-Multi-Agent-Forecasting
+python -m venv .venv
+source .venv/Scripts/activate
+pip install -r requirements.txt
+python run_pipeline.py --ticker SPY --start 2018-01-01 --no_prophet
 python run_pipeline.py --ticker SPY --start 2018-01-01
 ```
 
-For a quick check before Prophet:
+# Push
 
 ```bash
-python run_pipeline.py --ticker SPY --start 2018-01-01 --no_prophet
+git add agents/ baselines/ evaluation/ data_loader.py run_pipeline.py update_readme_results.py README.md requirements.txt deploy_results.sh results/
+git commit -m "Add dynamic forecasting coordinator and update results"
+git push origin main
 ```
 
-The pipeline will generate:
+# Important
 
-- `results/decomposition.png`
-- `results/backtest_mape.png`
-- `results/forecast_comparison.png`
-- `results/backtest_results.csv`
-- `results/summary_metrics.csv`
-
-It will also rewrite the README section between:
+Your old screenshot still shows the old pipeline text:
 
 ```text
-<!-- RESULTS_START -->
-<!-- RESULTS_END -->
+=== Average metrics across all folds ===
 ```
 
-so the graphs and metrics show directly on GitHub.
+This patch prints:
+
+```text
+=== Average metrics across folds ===
+```
+
+If you still see `across all folds`, your terminal is not running the replaced `run_pipeline.py`.
