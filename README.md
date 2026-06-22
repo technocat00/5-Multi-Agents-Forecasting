@@ -48,9 +48,37 @@ The key improvement is that the final prediction is no longer a blind sum of tre
 Running the pipeline writes the rolling backtest table, headline metrics, and graphs into `results/`. The README is updated automatically after each run.
 
 <!-- RESULTS_START -->
+### Latest generated results
 
-Run the pipeline once to populate this section with the latest metrics and graphs.
+| Model | MAPE ↓ | RMSE ↓ | MAE ↓ | Runtime sec ↓ |
+|---|---:|---:|---:|---:|
+| Multi Agent | 25.212 | 22,022,293.370 | 18,754,464.983 | 0.871 |
+| Naive | 27.928 | 23,823,458.591 | 20,551,693.922 | - |
+| Moving Avg | 26.236 | 22,486,255.297 | 19,445,310.883 | - |
+| Seasonal Naive | 30.290 | 26,948,711.861 | 22,469,611.519 | - |
+| Prophet | 30.854 | 25,161,765.913 | 22,141,025.557 | 0.638 |
 
+### Agent contribution ablation
+
+Positive RMSE contribution means removing that component worsened the forecast.
+
+| Component | Avg RMSE degradation ↑ |
+|---|---:|
+| Trend Agent | -2,049.751 |
+| Seasonal Agent | 0.000 |
+| Residual Agent | 1,313,751.968 |
+
+**Dynamic model selection frequency**
+
+- `dynamic_ensemble`: 100.0% of folds
+
+### Generated plots
+
+![STL decomposition](results/decomposition.png)
+
+![Backtest MAPE by fold](results/backtest_mape.png)
+
+![Latest holdout forecast](results/forecast_comparison.png)
 <!-- RESULTS_END -->
 
 ## Setup
