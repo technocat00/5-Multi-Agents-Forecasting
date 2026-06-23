@@ -136,3 +136,5 @@ A pure decomposition model can fail badly when trend extrapolation or residual r
 - Lower MAPE, RMSE, and MAE are better.
 - `selected_model` in `results/backtest_results.csv` shows what the coordinator chose for each fold.
 - The final metric is still produced by rolling-origin backtesting, not by a single train/test split.
+## Author
+Diya Arora
